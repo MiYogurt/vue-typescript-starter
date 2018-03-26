@@ -26,8 +26,7 @@ ts-node server.ts
 == 已知问题
 
 [WARNING]
-动态导入有问题，当服务端渲染的时候，标签会变成 ``Comment``，会造成冲突，但可以正常使用。
-某些定义文件有问题，但不影响使用
+某些定义文件有问题，但不影响使用, 模块使用的是 commonjs，使用 es6 模块的话，定义无法合并，暂时没找到原因。
 
 [WARNING]
 ``"esModuleInterop": true `` 可以帮助你把 `` export = xxx `` 也可以通过 `` import xxx from 'xxx' `` 导入。

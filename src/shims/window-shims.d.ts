@@ -5,8 +5,8 @@ declare global {
   interface Window {
     readonly __INITIAL_STATE__: any
   }
-
   interface NodeRequire {
-    ensure: any
+    ensure: (...args: any[]) => any;
   }
 }
+

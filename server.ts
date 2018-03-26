@@ -47,12 +47,7 @@ if (isProd) {
   const clientManifest = require(resolve('./dist/vue-ssr-client-manifest.json'))
   renderer = createRenderer(bundle, {
     template,
-    clientManifest,
-    directives: {
-      // stream(vnode, directiveMeta) {
-
-      // }
-    }
+    clientManifest
   })
 } else {
   readyPromise = require('./configs/wait-parcel')(
@@ -100,7 +95,7 @@ const handleError = (err: any, req: any, res: any) => {
 }
 
 function render(req: any, res: any) {
-  const s = Date.now()
+  // const s = Date.now()
   res.setHeader('Content-Type', 'text/html')
   const context = {
     title: 'App',
@@ -113,7 +108,7 @@ function render(req: any, res: any) {
     }
     res.send(html)
     if (!isProd) {
-      console.log(`whole request: ${Date.now() - s}ms`)
+      // console.log(`whole request: ${Date.now() - s}ms`)
     }
   })
 }

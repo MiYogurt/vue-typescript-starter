@@ -38,11 +38,9 @@ export default context => {
             })
           }
         })
-        // .filter(_ => _)
-
       Promise.all(asyncDataHooks)
         .then(() => {
-          isDev && console.log(`data pre-fetch: ${Date.now() - s}ms`)
+          // isDev && console.log(`data pre-fetch: ${Date.now() - s}ms`)
           context.state = store.state
           resolve(app)
         })

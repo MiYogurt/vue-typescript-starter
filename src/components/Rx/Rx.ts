@@ -6,7 +6,7 @@ import { Observable, Subject } from 'rxjs'
 import './Rx.styl';
 
 @Component({
-  name: 'rx',
+  name: 'Rx',
   // style: require('./Rx.styl').toString(),
   template: compile(),
   subscriptions(this: Rx) {
@@ -24,6 +24,7 @@ export default class Rx extends Vue {
   down$ = new Subject<any>()
   up$ = new Subject<any>()
   asyncData(){
-    
+    console.log("async Data")
   }
+
 }

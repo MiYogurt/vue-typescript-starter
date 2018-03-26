@@ -15,7 +15,8 @@ const prodPlugins = concatCommon([
   })
 ])
 
-const devPlugins = concatCommon([new FriendlyErrorsWebpackPlugin()])
+// const devPlugins = concatCommon([new FriendlyErrorsWebpackPlugin()])
+const devPlugins = concatCommon([])
 
 const babelrc = {
   presets: [
@@ -46,8 +47,7 @@ const BaseConfiguration: Configuration = {
   },
   resolve: {
     alias: {
-      public: getPath('public'),
-      '@components': getPath('src/components')
+      public: getPath('public')
     },
     extensions: ['.ts', '.tsx', '.js', '.vue', '.json']
   },

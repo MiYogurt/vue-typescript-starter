@@ -16,6 +16,12 @@ export default class HelloJSX extends Vue {
       this.enthusiasm--
     }
   }
+  public async asyncData(){
+    console.log("async Data")
+  }
+  public title () {
+    return 'Cool';
+  }
   public get exclamationMarks(): string {
     return Array.from({ length: this.enthusiasm + 1 }).join('!')
   }

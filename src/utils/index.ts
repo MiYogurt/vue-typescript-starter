@@ -23,3 +23,23 @@ export function findAsyncDataFunction(object: any) {
   }
   return null
 }
+
+export function findTitle(object: any) {
+  const method = 'title'
+
+  const exist: exist = R.path((R as any).__, object)
+  const map = [
+    ['title'],
+    ['options', 'title'],
+    ['options', 'methods', 'title'],
+    ['$options', 'title']
+  ]
+
+  for (const path of map) {
+    const asyncData = exist(path)
+    if (asyncData) {
+      return asyncData
+    }
+  }
+  return null
+}

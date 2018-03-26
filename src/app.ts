@@ -36,16 +36,17 @@ Vue.use(VueRx, {
 // ─────────────────────────────────────────────────────────── END RX INSTALL ─────
 //
 
+import titleMixin from './utils/title'
+Vue.mixin(titleMixin)
+
 export default function createApp() {
   const store = createStore()
   const router = createRouter()
 
   sync(store, router)
   const app = new Vue({
-    el: '#app',
     store,
     router,
-    data: { name: 'World' },
     render: h => h(App)
   })
 

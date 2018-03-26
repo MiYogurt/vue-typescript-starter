@@ -8,7 +8,11 @@
     "experimentalDecorators": true,
     "jsx": "preserve",
     "jsxFactory": "h",
-    "esModuleInterop": true
+    "esModuleInterop": true,
+    "typeRoots": [
+      "./shims",
+      "../node_modules/@types"
+    ]
   },
   "exclude": [
     "./router"

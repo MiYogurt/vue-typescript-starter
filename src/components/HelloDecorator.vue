@@ -14,12 +14,7 @@
 import { Vue, Component, Prop } from 'vue-property-decorator'
 import { ComponentOptions } from 'vue'
 
-@Component({
-  async asyncData({ store }) {
-    store.state.name = 'yugo2'
-    console.log(store.state)
-  }
-})
+@Component
 export default class HelloDecorator extends Vue
   implements ComponentOptions<HelloDecorator> {
   name = 'decorator'
@@ -27,6 +22,10 @@ export default class HelloDecorator extends Vue
 
   increment() {
     this.enthusiasm++
+  }
+
+  async asyncData({ store }) {
+    store.state.name = 'yugo2'
   }
 
   decrement() {
