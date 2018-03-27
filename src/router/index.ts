@@ -7,8 +7,7 @@ import { resolve } from 'url';
 
 Vue.use(Router)
 
-// let Cool: any = () => import(/* webpackChunkName: "my-chunk-name" */
-// /* webpackMode: "lazy" */ '../components/One.vue')
+// const Cool = () => _import("../components/One.vue")
 
 const Cool = () => new Promise((resolve, reject) => {
   require.ensure(['../components/Cool.tsx'], (require) => {

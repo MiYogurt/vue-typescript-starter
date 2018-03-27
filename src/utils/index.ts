@@ -1,13 +1,12 @@
-import * as R from 'ramda'
-
 interface exist {
   (path: Array<any>) : (...args: Array<any>) => Promise<void>
 }
 
+const existF : any = (object) => R.flip(R.path)(object)
+
 export function findAsyncDataFunction(object: any) {
   const method = 'asyncData'
-
-  const exist: exist = R.path((R as any).__, object)
+  const exist : exist = existF(object)
   const map = [
     ['asyncData'],
     ['options', 'asyncData'],
@@ -26,8 +25,7 @@ export function findAsyncDataFunction(object: any) {
 
 export function findTitle(object: any) {
   const method = 'title'
-
-  const exist: exist = R.path((R as any).__, object)
+  const exist : exist = existF(object)
   const map = [
     ['title'],
     ['options', 'title'],

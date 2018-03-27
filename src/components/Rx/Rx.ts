@@ -1,30 +1,29 @@
-import compile from './Rx.pug'
+import * as compile from './Rx.pug'
 import { CreateElement, ComponentOptions } from 'vue'
 import { Vue, Component, Prop } from 'vue-property-decorator'
-import { add, always } from 'ramda'
-import { Observable, Subject } from 'rxjs'
-import './Rx.styl';
+// import './Rx.styl';
 
-@Component({
-  name: 'Rx',
-  // style: require('./Rx.styl').toString(),
+@Component<Vue>({
+  name: 'RxC',
+  style: require('./Rx.styl').toString(),
   template: compile(),
-  subscriptions(this: Rx) {
-    const up$ = this.up$.map(always(1))
-    const down$ = this.down$.map(always(-1))
-    const count$ = Observable.merge(up$, down$)
+  subscriptions(this: RxC) {
+    const up$ = this.up$.map(R.always(1))
+    const down$ = this.down$.map(R.always(-1))
+    const count$ = Rx.Observable.merge(up$, down$)
       .startWith(0)
-      .scan(add)
+      .scan(R.add)
     return {
       count: count$
     }
-  }
+  },
 })
-export default class Rx extends Vue {
-  down$ = new Subject<any>()
-  up$ = new Subject<any>()
+export default class RxC extends Vue {
+  down$ = new Rx.Subject<any>()
+  up$ = new Rx.Subject<any>()
   asyncData(){
     console.log("async Data")
   }
 
 }
+

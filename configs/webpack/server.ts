@@ -13,13 +13,35 @@ export default merge(BaseConfiguration, {
     filename: 'server-bundle.js',
     libraryTarget: 'commonjs2'
   },
-  externals: [nodeExternals({
-    whitelist: [/\.css$/, /\.styl$/]
-  })],
+  resolve: {
+    extensions: [
+      '.ts',
+      '.tsx',
+      '.js',
+      '.vue',
+      '.json',
+      '.styl',
+      '.css',
+      '.sass',
+      '.scss'
+    ]
+  },
+  externals: [
+    nodeExternals({
+      whitelist: [
+        /\.css$/, 
+        /\.styl$/
+      ]
+    })
+  ],
   plugins: [
     new webpack.DefinePlugin({
       isServer: true,
       isClient: false
+    }),
+    new webpack.ProvidePlugin({
+      R: ['ramda/dist/ramda.js'],
+      Rx: ['rxjs']
     }),
     new VueSSRServerPlugin()
   ]

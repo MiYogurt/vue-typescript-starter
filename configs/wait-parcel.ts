@@ -14,7 +14,7 @@ const readFile = (fs: any, file: string) => {
   } catch (e) {}
 }
 
-export = function parcel(app: any, templatePath: any, cb: Function) {
+export default function parcel(app: any, templatePath: any, cb: Function) {
   let bundle: any
   let template: any
   let clientManifest: any

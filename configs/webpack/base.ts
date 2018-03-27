@@ -1,4 +1,5 @@
-import { Configuration } from 'webpack'
+import { Configuration, ProvidePlugin } from 'webpack'
+import * as webpack from 'webpack'
 import * as ExtractTextPlugin from 'extract-text-webpack-plugin'
 import * as FriendlyErrorsWebpackPlugin from 'friendly-errors-webpack-plugin'
 import { concat } from 'ramda'
@@ -6,7 +7,12 @@ import { getPath } from './utils'
 
 const isProd = 'prod' === process.env.NODE_ENV
 
-const commonPlugins = []
+const commonPlugins = [
+  // new ProvidePlugin({
+  //   R: ['ramda/dist/ramda.js'],
+  //   Rx: ['rxjs']
+  // })
+]
 const concatCommon = concat(commonPlugins)
 
 const prodPlugins = concatCommon([
@@ -28,26 +34,31 @@ const babelrc = {
     ],
     'env'
   ],
-  "plugins": [
-    ["ramda", {
-      "useES": true
-    }]
+  plugins: [
+    [
+      'ramda',
+      {
+        useES: true
+      }
+    ]
   ]
 }
 
 const publicPath = '/dist/'
 
 const BaseConfiguration: Configuration = {
-  devtool: isProd ? false : 'cheap-module-source-map',
+  devtool: isProd ? false : 'inline-source-map',
   mode: isProd ? 'production' : 'development',
   output: {
     path: getPath('dist'),
     chunkFilename: '[name].[hash].bundle.js',
-    filename: '[name].[hash].js'
+    filename: '[name].[hash].js',
+    publicPath: '/dist/'
   },
   resolve: {
     alias: {
-      public: getPath('public')
+      public: getPath('public'),
+      vue$: 'vue/dist/vue.esm.js'
     },
     extensions: ['.ts', '.tsx', '.js', '.vue', '.json']
   },
@@ -57,17 +68,19 @@ const BaseConfiguration: Configuration = {
     hints: isProd ? 'warning' : false
   },
   module: {
+    unknownContextCritical: false,
+    noParse: /es6-promise/,
     rules: [
       {
         test: /\.vue$/,
         loader: 'vue-loader',
         options: {
-          extractCSS: isProd
-          // loaders: {
-          //   scss: 'vue-style-loader!css-loader!sass-loader',
-          //   sass: 'vue-style-loader!css-loader!sass-loader?indentedSyntax',
-          //   styl: 'vue-style-loader!css-loader!stylus-loader'
-          // }
+          extractCSS: isProd,
+          loaders: {
+            scss: 'vue-style-loader!css-loader!sass-loader',
+            sass: 'vue-style-loader!css-loader!sass-loader?indentedSyntax',
+            styl: 'vue-style-loader!css-loader!stylus-loader'
+          }
         }
       },
       { test: /\.styl$/, loader: 'vue-style-loader!css-loader!stylus-loader' },

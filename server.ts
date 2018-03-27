@@ -2,6 +2,7 @@ import * as fs from 'fs'
 import * as path from 'path'
 import * as express from 'express'
 import * as LRU from 'lru-cache'
+import waitParcel from './configs/wait-parcel'
 
 const favicon = require('serve-favicon')
 const compression = require('compression')
@@ -15,7 +16,7 @@ import { createBundleRenderer } from 'vue-server-renderer'
 
 const resolve = (file: string) => path.resolve(__dirname, file)
 
-const isProd = process.env.NODE_ENV === 'production'
+const isProd = process.env.NODE_ENV === 'prod'
 const useMicroCache = process.env.MICRO_CACHE !== 'false'
 
 const app = express()
@@ -41,7 +42,7 @@ let readyPromise: Promise<any>
 
 const templatePath = resolve('src/index.template.html')
 
-if (isProd) { 
+if (isProd) {
   const template = fs.readFileSync(templatePath, 'utf-8')
   const bundle = require(resolve('./dist/vue-ssr-server-bundle.json'))
   const clientManifest = require(resolve('./dist/vue-ssr-client-manifest.json'))
@@ -50,13 +51,9 @@ if (isProd) {
     clientManifest
   })
 } else {
-  readyPromise = require('./configs/wait-parcel')(
-    app,
-    templatePath,
-    (bundle: any, options: any) => {
-      renderer = createRenderer(bundle, options)
-    }
-  )
+  readyPromise = waitParcel(app, templatePath, (bundle: any, options: any) => {
+    renderer = createRenderer(bundle, options)
+  })
 }
 
 const serve = (path: string, cache: boolean) =>

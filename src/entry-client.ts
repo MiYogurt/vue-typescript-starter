@@ -1,8 +1,8 @@
-import Vue from 'vue'
-import createApp from './app'
-require('es6-promise/auto')
+import 'es6-promise'
 import ProgressBar from './components/ProgressBar.vue'
 import { findAsyncDataFunction } from './utils'
+import Vue from 'vue'
+import createApp from './app'
 
 // global progress bar
 const bar: any = (Vue.prototype.$bar = new Vue(ProgressBar).$mount())

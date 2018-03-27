@@ -9,7 +9,7 @@
     "start": "cross-env NODE_ENV=prod ts-node server.ts",
     "build:client": "cross-env NODE_ENV=prod webpack --config configs/webpack/client.ts",
     "build:server": "cross-env NODE_ENV=prod webpack --config configs/webpack/server.ts",
-    "build": "npm-run-all -s build:*",
+    "build": "rm -rf dist && npm-run-all -s build:*",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
@@ -71,6 +71,7 @@
     "vue-loader": "^14.2.1",
     "vue-template-compiler": "^2.5.13",
     "webpack": "^4.2.0",
+    "webpack-bundle-analyzer": "^2.11.1",
     "webpack-cli": "^2.0.10",
     "webpack-dev-server": "^3.1.0",
     "webpack-hot-middleware": "^2.21.2",

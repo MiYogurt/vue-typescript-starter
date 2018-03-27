@@ -1,12 +1,8 @@
 //
 // ─── IMPORT COMPONENTS ──────────────────────────────────────────────────────────
 //
-
+import './utils/import'
 import Vue from 'vue'
-import HelloComponent from './components/Hello.vue'
-import HelloDecoratorComponent from './components/HelloDecorator.vue'
-import Cool from './components/Cool'
-import Rx from './components/Rx/Rx'
 import App from './app.vue'
 
 //
@@ -21,23 +17,18 @@ import { sync } from 'vuex-router-sync'
 // ─── RX INSTALL ─────────────────────────────────────────────────────────────────
 //
 
-import VueRx from 'vue-rx'
-import { Observable } from 'rxjs/Observable'
-import { Subscription } from 'rxjs/Subscription'
-import { Subject } from 'rxjs/Subject'
+import * as VueRx from 'vue-rx'
 
-Vue.use(VueRx, {
-  Observable,
-  Subscription,
-  Subject
-})
+Vue.use(VueRx, Rx)
 
 //
 // ─────────────────────────────────────────────────────────── END RX INSTALL ─────
 //
 
 import titleMixin from './utils/title'
+
 Vue.mixin(titleMixin)
+
 
 export default function createApp() {
   const store = createStore()
