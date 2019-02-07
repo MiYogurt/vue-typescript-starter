@@ -1,18 +1,22 @@
-import * as compile from './Rx.pug'
+import compile from './Rx.pug'
 import { CreateElement, ComponentOptions } from 'vue'
 import { Vue, Component, Prop } from 'vue-property-decorator'
 // import './Rx.styl';
 
+import { map, startWith, scan } from 'rxjs/operators';
+
 @Component<Vue>({
   name: 'RxC',
   style: require('./Rx.styl').toString(),
-  template: compile(),
+  template: compile,
   subscriptions(this: RxC) {
-    const up$ = this.up$.map(R.always(1))
-    const down$ = this.down$.map(R.always(-1))
-    const count$ = Rx.Observable.merge(up$, down$)
-      .startWith(0)
-      .scan(R.add)
+    const up$ = this.up$.pipe(map(R.always(1)))
+    const down$ = this.down$.pipe(map(R.always(-1)))
+    const count$ = Rx.merge(up$, down$).pipe(
+      startWith(0),
+      scan<number>(R.add)
+    )
+      
     return {
       count: count$
     }

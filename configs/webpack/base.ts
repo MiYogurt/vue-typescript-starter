@@ -5,13 +5,16 @@ import * as FriendlyErrorsWebpackPlugin from 'friendly-errors-webpack-plugin'
 import { concat } from 'ramda'
 import { getPath } from './utils'
 
+const VueLoaderPlugin = require('vue-loader/lib/plugin')
+
 const isProd = 'prod' === process.env.NODE_ENV
 
 const commonPlugins = [
-  // new ProvidePlugin({
-  //   R: ['ramda/dist/ramda.js'],
-  //   Rx: ['rxjs']
-  // })
+  new VueLoaderPlugin(),
+  new ProvidePlugin({
+    R: ['ramda/dist/ramda.js'],
+    Rx: ['rxjs']
+  })
 ]
 const concatCommon = concat(commonPlugins)
 
@@ -27,12 +30,10 @@ const devPlugins = concatCommon([])
 const babelrc = {
   presets: [
     [
-      'vue-app',
-      {
-        useBuiltIns: true
-      }
+      '@vue/app'
     ],
-    'env'
+    ["@babel/preset-typescript", { isTSX: true, allExtensions: true, jsxPragma: 'h' }],
+    '@babel/preset-env'
   ],
   plugins: [
     [
@@ -40,7 +41,14 @@ const babelrc = {
       {
         useES: true
       }
-    ]
+    ],
+    [
+      "@babel/plugin-proposal-decorators",
+      {
+        "legacy": true
+      }
+    ],
+    "transform-class-properties"
   ]
 }
 
@@ -83,18 +91,70 @@ const BaseConfiguration: Configuration = {
           }
         }
       },
-      { test: /\.styl$/, loader: 'vue-style-loader!css-loader!stylus-loader' },
-      { test: /\.pug$/, loader: 'pug-loader', options: { doctype: 'html' } },
+      {
+        test: /\.css$/,
+        oneOf: [
+          // 这里匹配 `<style module>`
+          {
+            resourceQuery: /module/,
+            use: [
+              'vue-style-loader',
+              {
+                loader: 'css-loader',
+                options: {
+                  modules: true,
+                  localIdentName: '[local]_[hash:base64:5]'
+                }
+              }
+            ]
+          },
+          // 这里匹配普通的 `<style>` 或 `<style scoped>`
+          {
+            use: [
+              'vue-style-loader',
+              'css-loader'
+            ]
+          }
+        ]
+      },
+      {
+        test: /\.styl(us)?$/,
+        use: [
+          'vue-style-loader',
+          'css-loader',
+          'stylus-loader'
+        ]
+      },
+      {
+        test: /\.pug$/,
+        oneOf: [
+          // this applies to `<template lang="pug">` in Vue components
+          {
+            resourceQuery: /^\?vue/,
+            use: ['pug-plain-loader']
+          },
+          // this applies to pug imports inside JavaScript
+          {
+            use: ['raw-loader', 'pug-plain-loader']
+          }
+        ]
+      },
       {
         test: /\.ts$/,
         loader: 'ts-loader',
-        exclude: /node_modules/,
+        exclude: file => (
+          /node_modules/.test(file) &&
+          !/\.vue\.js/.test(file)
+        ),
         options: { appendTsSuffixTo: [/\.vue$/] }
       },
       {
         test: /\.tsx$/,
-        exclude: /node_modules/,
-        use: [{ loader: 'babel-loader', options: babelrc }, 'ts-loader']
+        exclude: file => (
+          /node_modules/.test(file) &&
+          !/\.vue\.js/.test(file)
+        ),
+        use: [{ loader: 'babel-loader', options: babelrc }]
       },
       {
         test: /\.(png|jpg|gif|svg)$/,

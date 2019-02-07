@@ -17,7 +17,7 @@ import { sync } from 'vuex-router-sync'
 // ─── RX INSTALL ─────────────────────────────────────────────────────────────────
 //
 
-import * as VueRx from 'vue-rx'
+import VueRx from 'vue-rx'
 
 Vue.use(VueRx, Rx)
 

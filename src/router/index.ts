@@ -3,11 +3,9 @@ import Router from 'vue-router'
 import Hello from '../components/Hello.vue'
 import HelloDecorator from '../components/HelloDecorator.vue'
 import Rx from '../components/Rx/Rx';
-import { resolve } from 'url';
+// import Cool from "../components/Cool.tsx";
 
 Vue.use(Router)
-
-// const Cool = () => _import("../components/One.vue")
 
 const Cool = () => new Promise((resolve, reject) => {
   require.ensure(['../components/Cool.tsx'], (require) => {

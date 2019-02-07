@@ -34,7 +34,7 @@ const clientConfiguration = merge(BaseConfiguration, {
 })
 
 if(!isProd) {
-  clientConfiguration.plugins.push(new BundleAnalyzerPlugin())
+  // clientConfiguration.plugins.push(new BundleAnalyzerPlugin())
   clientConfiguration.optimization = {
     splitChunks: {
       name: "common",
